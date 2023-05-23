@@ -10,7 +10,14 @@ function generateWhatsAppLink() {
     var link = "https://wa.me/" + phoneNumber + "?text=" + message;
 
     shortenURL(link, function(shortenedLink) {
-        document.getElementById("generatedLink").innerHTML = '<a href="' + shortenedLink + '" target="_blank">' + shortenedLink + '</a>';
+        var generatedLinkContainer = document.getElementById("generatedLink");
+        generatedLinkContainer.innerHTML = ""; // Clear previous content
+        var generatedLink = document.createElement("a");
+        generatedLink.href = shortenedLink;
+        generatedLink.target = "_blank";
+        generatedLink.textContent = shortenedLink;
+        generatedLinkContainer.appendChild(generatedLink);
+
         document.getElementById("resultContainer").classList.remove("hidden");
     });
 }
