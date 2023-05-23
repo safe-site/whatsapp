@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp Link Generator</title>
+    <link rel="stylesheet" type="text/css" href="wa.css">
+</head>
+<body>
+    <h1>WhatsApp Link Generator</h1>
+    <form id="whatsappForm">
+        <label for="phoneNumber">WhatsApp Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter WhatsApp Number" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" placeholder="Enter Custom Message" required></textarea>
+
+        <button type="submit">Generate Link</button>
+    </form>
+
+    <div id="resultContainer" class="hidden">
+        <h2>Generated Link:</h2>
+        <div id="generatedLink"></div>
+    </div>
+
+    <script src="wa.js"></script>
+</body>
+</html>
