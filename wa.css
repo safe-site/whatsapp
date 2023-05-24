@@ -17,6 +17,13 @@ h1 {
     margin-bottom: 20px;
 }
 
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+
 form label {
     display: block;
     margin-bottom: 5px;
@@ -47,6 +54,7 @@ button {
 }
 
 #generatedLink {
+    color: blue;
     word-break: break-all;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -59,3 +67,13 @@ button {
     display: none;
 }
 
+#copyButton,#shareButton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    float: center;
+    margin-top: 10px;
+    border-radius: 5px;
+}
