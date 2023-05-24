@@ -59,38 +59,3 @@ button {
     display: none;
 }
 
-footer { 
- position: fixed; 
- left: 0; 
- bottom: 0; 
- width: 100%; 
- background-color: #2f3134; 
- text-align: center; 
- z-index: 1; 
- } 
-  
-  
-  
- footer p {  
-  color: white;  
-  font-size: 18px;  
-  text-shadow: 2px 2px 2px #000000;  
-  margin-left: 0px;  
-  margin-right: 0px;  
-  text-align: center;  
-  } 
-  
-  
-  
- .my-link { 
-   color: #029bed; 
-   text-decoration: none; 
- } 
-  
- .my-link:hover, 
- .my-link:focus, 
- .my-link:active, 
- .my-link:visited { 
-   text-decoration: none; 
- } 
- 
