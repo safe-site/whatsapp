@@ -13,11 +13,11 @@ async function handleSubmit(event) {
 
   // Generate a token and create the WhatsApp link
   const token = generateToken();
-  const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}&token=${encodeURIComponent(token)}`;
+  const link = `https://wa.me/+91${phoneNumber}?text=${encodeURIComponent(message)}&token=${encodeURIComponent(token)}`;
 
-  // Shorten the link using the TinyURL API
-  const apiEndpoint = 'https://api.tinyurl.com/dev/api-create.php';
-  const response = await fetch(`${apiEndpoint}?url=${encodeURIComponent(link)}`);
+  // Shorten the link using TinyURL manually
+  const apiEndpoint = 'https://tinyurl.com/api-create.php?url=';
+  const response = await fetch(apiEndpoint + encodeURIComponent(link));
   const shortUrl = await response.text();
 
   // Display the shortened link
