@@ -1,59 +1,67 @@
-// Generate a random token
-const generateToken = () => {
+// Function to generate a random token
+function generateToken() {
   return Math.random().toString(36).substr(2, 9);
-};
+}
 
-// Function to copy the generated link to the clipboard
+// Function to handle form submission
+async function handleSubmit(event) {
+  event.preventDefault();
+
+  // Get the input values
+  const phoneNumber = document.getElementById('phoneNumber').value;
+  const message = document.getElementById('message').value;
+
+  // Generate a token and create the WhatsApp link
+  const token = generateToken();
+  const link = `https://wa.me/+91${phoneNumber}?text=${encodeURIComponent(message)}&token=${encodeURIComponent(token)}`;
+
+  // Shorten the link using TinyURL manually
+  const apiEndpoint = 'https://tinyurl.com/api-create.php?url=';
+  const response = await fetch(apiEndpoint + encodeURIComponent(link));
+  const shortUrl = await response.text();
+
+  // Display the shortened link
+  const resultContainer = document.getElementById('resultContainer');
+  const generatedLink = document.getElementById('generatedLink');
+  generatedLink.textContent = shortUrl;
+  resultContainer.classList.remove('hidden');
+}
+
+// Add event listener to the form submit button
+const whatsappForm = document.getElementById('whatsappForm');
+whatsappForm.addEventListener('submit', handleSubmit);
+// Function to copy the generated link to clipboard
 const copyToClipboard = () => {
   const generatedLink = document.getElementById('generatedLink');
-  const range = document.createRange();
-  range.selectNode(generatedLink);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
+
+  // Create a temporary input element
+  const tempInput = document.createElement('input');
+  tempInput.value = generatedLink.innerText;
+  document.body.appendChild(tempInput);
+
+  // Select and copy the text from the input element
+  tempInput.select();
   document.execCommand('copy');
-  window.getSelection().removeAllRanges();
+
+  // Remove the temporary input element
+  document.body.removeChild(tempInput);
+
+  // Show a confirmation message to the user
   alert('Link copied to clipboard!');
 };
 
-// Function to share the generated link on social media
-const shareOnSocialMedia = () => {
-  const generatedLink = document.getElementById('generatedLink').textContent;
-
-  if (navigator.share) {
-    navigator.share({
-      title: 'WhatsApp Link',
-      text: 'Check out this WhatsApp link',
-      url: generatedLink,
-    });
-  } else {
-    prompt('Copy this link and share it with others:', generatedLink);
-  }
-};
-
-// Generate the WhatsApp link and display it
-const generateWhatsAppLink = () => {
-  const phoneNumber = document.getElementById('phoneNumber').value;
-  const message = document.getElementById('message').value;
-  const token = generateToken();
-  const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}&token=${encodeURIComponent(token)}`;
-
-  // Update the generated link container with the generated link
-  const generatedLinkContainer = document.getElementById('generatedLink');
-  generatedLinkContainer.textContent = link;
-
-  // Show the result container
-  const resultContainer = document.getElementById('resultContainer');
-  resultContainer.classList.remove('hidden');
-};
-
-// Add event listener to the Generate Link button
-const generateButton = document.getElementById('generateButton');
-generateButton.addEventListener('click', generateWhatsAppLink);
-
-// Add event listener to the Copy button
+// Add event listener to the copy button/link
 const copyButton = document.getElementById('copyButton');
 copyButton.addEventListener('click', copyToClipboard);
+// Function to share the generated link on WhatsApp
+const shareOnWhatsApp = () => {
+  const generatedLink = document.getElementById('generatedLink').innerText;
 
-// Add event listener to the Share button
+  // Open the generated WhatsApp link in the WhatsApp application
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(generatedLink)}`;
+  window.open(whatsappUrl, '_blank');
+};
+
+// Add event listener to the share button/link
 const shareButton = document.getElementById('shareButton');
-shareButton.addEventListener('click', shareOnSocialMedia);
+shareButton.addEventListener('click', shareOnWhatsApp);
