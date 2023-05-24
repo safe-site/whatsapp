@@ -1,38 +1,32 @@
-document.getElementById("whatsappForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    generateWhatsAppLink();
-});
-
-function generateWhatsAppLink() {
-    var phoneNumber = document.getElementById("phoneNumber").value;
-    var message = encodeURIComponent(document.getElementById("message").value);
-    
-    var link = "https://wa.me/" + phoneNumber + "?text=" + message;
-
-    shortenURL(link, function(shortenedLink) {
-        var generatedLinkContainer = document.getElementById("generatedLink");
-        generatedLinkContainer.innerHTML = ""; // Clear previous content
-        var generatedLink = document.createElement("a");
-        generatedLink.href = shortenedLink;
-        generatedLink.target = "_blank";
-        generatedLink.textContent = shortenedLink;
-        generatedLinkContainer.appendChild(generatedLink);
-
-        document.getElementById("resultContainer").classList.remove("hidden");
-    });
+// Function to generate a random token
+function generateToken() {
+  return Math.random().toString(36).substr(2, 9);
 }
 
-function shortenURL(url, callback) {
-    var apiUrl = 'https://api.tinyurl.com/api-create.php?url=' + encodeURIComponent(url);
-    var request = new XMLHttpRequest();
+// Function to handle form submission
+async function handleSubmit(event) {
+  event.preventDefault();
 
-    request.onreadystatechange = function() {
-        if (request.readyState === 4 && request.status === 200) {
-            var shortenedURL = request.responseText;
-            callback(shortenedURL);
-        }
-    };
+  // Get the input values
+  const phoneNumber = document.getElementById('phoneNumber').value;
+  const message = document.getElementById('message').value;
 
-    request.open("GET", apiUrl, true);
-    request.send();
+  // Generate a token and create the WhatsApp link
+  const token = generateToken();
+  const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}&token=${encodeURIComponent(token)}`;
+
+  // Shorten the link using the TinyURL API
+  const apiEndpoint = 'https://api.tinyurl.com/dev/api-create.php';
+  const response = await fetch(`${apiEndpoint}?url=${encodeURIComponent(link)}`);
+  const shortUrl = await response.text();
+
+  // Display the shortened link
+  const resultContainer = document.getElementById('resultContainer');
+  const generatedLink = document.getElementById('generatedLink');
+  generatedLink.textContent = shortUrl;
+  resultContainer.classList.remove('hidden');
 }
+
+// Add event listener to the form submit button
+const whatsappForm = document.getElementById('whatsappForm');
+whatsappForm.addEventListener('submit', handleSubmit);
